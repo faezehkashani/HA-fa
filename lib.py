@@ -1,11 +1,25 @@
 import os
+from telnetlib import Telnet
 
 
-def check_ip():
+def ping_ip(hostname):
 
-    hostname = "192.168.56.1"
-    response = os.system("ping -c 4 "+hostname)
-    if response == 0:
-        return hostname, "is up"
+    response = os.system("ping -c 4 " + hostname)
+    if response == 0:  # if server is uptime then response=0
+        return 1
     else:
-        return hostname, "is down"
+        return 0
+
+
+def telnet_port(hostname, port):
+    try:
+        tn = Telnet()
+        tn.open(hostname, port)
+        tn.close()
+        return 1
+
+    except IOError:
+        return 0
+
+
+#  rep = os.system("telnet " +hostname +" " +port1)
